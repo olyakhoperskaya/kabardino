@@ -85,14 +85,6 @@ const quiz = [
 const foodRoot = document.querySelector("#food");
 const tried = new Set(JSON.parse(localStorage.getItem("kbr-food") || "[]"));
 
-const dayPhoto = document.querySelector("#day-photo");
-
-function showPhoto(src, alt) {
-  if (!src) return;
-  dayPhoto.src = src;
-  dayPhoto.alt = alt || "";
-}
-
 food.forEach(([name, origin, text, image], index) => {
   const card = document.createElement("article");
   card.className = "dish" + (tried.has(index) ? " is-tried" : "");
@@ -153,7 +145,6 @@ function showDay(key) {
     dayTitle.textContent = "Все отметки";
     daySummary.textContent = "День 1 уходит на юг, в Черек. День 2 — в Чегем. День 3 — на запад, к Эльбрусу.";
     mapNote.textContent = "Синие точки — день 1, зелёные — день 2, оранжевые — день 3. Общей линии нет: дни расходятся и возвращаются в Нальчик.";
-    showPhoto("img/waterfalls.jpg", "Чегемские водопады");
     const pt = pins.map((s) => `${s.lon},${s.lat},pm2${s.color}m`).join("~");
     map.src = `https://yandex.ru/map-widget/v1/?ll=43.15,43.35&z=8&pt=${pt}&l=map`;
     mapLink.href = "https://yandex.ru/maps/?ll=43.15,43.35&z=8";
@@ -175,8 +166,6 @@ function showDay(key) {
   dayTitle.textContent = day.title;
   daySummary.textContent = day.summary;
   mapNote.textContent = day.note;
-  const firstPhoto = day.stops.find((stop) => stop.photo);
-  if (firstPhoto) showPhoto(firstPhoto.photo, firstPhoto.name);
   const routeStops = pinsOf(key);
   map.src = widgetSrc(routeStops, key === 3 ? 9 : 10);
   mapLink.href = mapsHref(routeStops);
@@ -197,7 +186,6 @@ function showDay(key) {
     button.addEventListener("click", () => {
       timeline.querySelectorAll(".stop").forEach((el) => el.classList.remove("is-on"));
       button.classList.add("is-on");
-      if (stop.photo) showPhoto(stop.photo, stop.name);
       map.src = widgetSrc([stop]);
       mapLink.href = `https://yandex.ru/maps/?pt=${stop.lon},${stop.lat}&z=13&l=map`;
     });
