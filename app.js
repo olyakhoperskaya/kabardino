@@ -167,7 +167,8 @@ function showDay(key) {
   daySummary.textContent = day.summary;
   mapNote.textContent = day.note;
   const routeStops = pinsOf(key);
-  map.src = widgetSrc(routeStops, key === 3 ? 9 : 10);
+  if (key === 3) routeStops.unshift({ lat: 43.49806, lon: 43.61889 });
+  map.src = widgetSrc(routeStops, key === 3 ? 8 : 10);
   mapLink.href = mapsHref(routeStops);
   timeline.innerHTML = "";
   day.stops.forEach((stop) => {
